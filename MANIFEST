@@ -11,7 +11,6 @@ README.md			README in Markdown format for github
 bin/trepanbw.pl
 example/gcd.pl
 gpl-3.0.txt
-lib/Devel/Trepan.pm
 lib/Devel/Trepan/BWProcessor.pm
 lib/Devel/Trepan/BWProcessor/Command.pm
 lib/Devel/Trepan/BWProcessor/Command/Continue.pm
@@ -22,10 +21,8 @@ lib/Devel/Trepan/BWProcessor/Command/Quit.pm
 lib/Devel/Trepan/BWProcessor/Command/Run.pm
 lib/Devel/Trepan/BWProcessor/Command/Step.pm
 lib/Devel/Trepan/BWProcessor/Default.pm
-lib/Devel/Trepan/BWProcessor/Frame.pm
 lib/Devel/Trepan/BWProcessor/Load.pm
 lib/Devel/Trepan/BWProcessor/Location.pm
 lib/Devel/Trepan/BWProcessor/Msg.pm
-lib/Devel/Trepan/BrkptMgr.pm
 lib/Devel/Trepan/Interface/Bullwinkle.pm
 t/10test-bwprocessor.t

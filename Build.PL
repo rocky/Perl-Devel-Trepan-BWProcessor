@@ -30,7 +30,7 @@ my $release_status = ($Devel::Trepan::BWProcessor::VERSION =~ /_/) ?
 # print "$Devel::Trepan::Version::VERSION $release_status\n";
 
 my $builder = Module::Build->new( 
-    module_name         => 'Devel::Trepan',
+    module_name         => 'Devel::Trepan::BWProcessor',
     add_to_cleanup      => [ 'Devel-Trepan-*', 'tmp*', '*.got'  ],
     create_makefile_pl  => 'passthrough',
     dist_abstract       => 

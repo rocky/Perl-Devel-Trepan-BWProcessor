@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "Devel-Trepan",
+   "name" : "Devel-Trepan-BWProcessor",
    "prereqs" : {
       "configure" : {
          "requires" : {
@@ -33,7 +33,7 @@
    "provides" : {
       "Devel::Trepan::BWProcessor" : {
          "file" : "lib/Devel/Trepan/BWProcessor.pm",
-         "version" : 0
+         "version" : "0.1"
       },
       "Devel::Trepan::BWProcessor::Command" : {
          "file" : "lib/Devel/Trepan/BWProcessor/Command.pm",
@@ -84,5 +84,5 @@
          "url" : "http://github.com/rocky/Perl-Devel-Trepan-BWProcessor"
       }
    },
-   "version" : "0"
+   "version" : "0.1"
 }

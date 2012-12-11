@@ -11,11 +11,11 @@ license: open_source
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
-name: Devel-Trepan
+name: Devel-Trepan-BWProcessor
 provides:
   Devel::Trepan::BWProcessor:
     file: lib/Devel/Trepan/BWProcessor.pm
-    version: 0
+    version: 0.1
   Devel::Trepan::BWProcessor::Command:
     file: lib/Devel/Trepan/BWProcessor/Command.pm
     version: 0
@@ -54,4 +54,4 @@ resources:
   bugtracker: https://github.com/rocky/Perl-Devel-Trepan-BWProcessor/issues
   license: http://www.gnu.org/licenses/old-licenses/gpl-1.0.txt
   repository: http://github.com/rocky/Perl-Devel-Trepan-BWProcessor
-version: 0
+version: 0.1

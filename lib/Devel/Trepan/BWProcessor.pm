@@ -3,11 +3,11 @@
 
 use rlib '../..';
 
-use version; $VERSION = '0.1';
-
 # A debugger Bullwinkle protocol processor. This includes the debugger commands
 # and ties together the debugger core and I/O interface.
 package Devel::Trepan::BWProcessor;
+
+use version; $VERSION = '0.1';
 
 use English qw( -no_match_vars );
 use Exporter;
