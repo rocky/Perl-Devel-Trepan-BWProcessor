@@ -1,0 +1,14 @@
+*~
+/Build
+/Devel-Trepan-*.tar.gz
+/MANIFEST.SKIP.bak
+/MANIFEST.bak
+/MYMETA.json
+/MYMETA.yml
+/Makefile
+/Makefile.PL
+/_build
+/blib
+/pod2htmd.tmp
+/pod2htmi.tmp
+/tmp
