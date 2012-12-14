@@ -9,7 +9,6 @@ use Exporter;
 
 use rlib '../../..';
 require Devel::Trepan::Util;
-require Devel::Trepan::BWProcessor;
 package Devel::Trepan::BWProcessor;
 
 use vars qw(@EXPORT @ISA);
@@ -59,7 +58,7 @@ sub section($$;$) {
     $self->{interface}->msg($message);
 }
 
-if (caller) {
+unless (caller) {
     require Devel::Trepan::BWProcessor;
     my $proc  = Devel::Trepan::BWProcessor->new;
     if (scalar(@ARGV) > 0 && $proc->{interface}->is_interactive) {

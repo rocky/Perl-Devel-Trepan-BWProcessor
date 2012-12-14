@@ -27,17 +27,29 @@ use constant DEFAULT_INIT_CONNECTION_OPTS => {
     logger => undef  # An Interface. Complaints go here.
 };
 
+use constant DEFAULT_INPUT_OPTS => {
+    readline   =>                        # Try to use Term::ReadLine?
+        $Devel::Trepan::IO::Input::HAVE_TERM_READLINE, 
+    # The below are only used if we want and have readline support.
+    # See method Trepan::term_readline below.
+    histsize => 256,                     # Use gdb's default setting
+    file_history   => '.trepanplbw_hist',  # where history file lives
+                                         # Note a directory will 
+                                         # be appended
+    history_save   => 1                  # do we save the history?
+};
+
 sub new
 {
-    my($class, $inp, $out, $connection_opts) = @_;
-    $connection_opts = hash_merge($connection_opts, DEFAULT_INIT_CONNECTION_OPTS);
-
+    my($class, $inp, $out, $opts) = @_;
+    my $connection_opts = hash_merge($opts->{connection_opts}, DEFAULT_INIT_CONNECTION_OPTS);
+    my $input_opts = hash_merge($opts->{input_opts}, DEFAULT_INPUT_OPTS);
+  
     # at_exit { finalize };
     ## FIXME:
     my $self = {
         output => $out || *STDOUT,
-        input  => Devel::Trepan::IO::Input->new($inp),
-        interactive => 0, 
+        input  => Devel::Trepan::IO::Input->new($inp, $input_opts),
         logger => $connection_opts->{logger}
     };
     bless $self, $class;
@@ -62,9 +74,17 @@ sub is_closed($)
     0
 }
 
-sub is_interactive($) { 0 }
+sub is_interactive($)
+{
+    my $self = shift;
+    $self->{input}->is_interactive;
+}
 
-sub has_completion($) { 0 }
+sub has_completion($)
+{
+    my $self = shift;
+    $self->{input}{term_readline};
+}
 
 # Called when a dangerous action is about to be done to make sure
 # it's okay. `prompt' is printed; user response is returned.
@@ -105,18 +125,33 @@ sub errmsg($;$)
     # $self->{inout}->writeline(SERVERERR . $msg);
 }
 
-# used to write to a debugger that is connected to this
+sub readline($;$) {
+    my($self, $prompt)  = @_;
+    $self->{output}->flush;
+    if ($self->{input}{readline}) {
+        $self->{input}->readline($prompt);
+    } else { 
+        $self->{output}->write($prompt . "\n: ") if defined($prompt) && $prompt;
+        $self->{input}->readline;
+    }
+}
+
+# read a debugger command
 sub read_command($$)
 {
     my ($self) = @_;
-    my $cmd_str = $self->readline("Bullwinkle: read\n: ");
+    my $cmd_str = $self->readline("Bullwinkle read: ");
     eval($cmd_str);
 }
 
 # Demo
 unless (caller) {
     my $intf = Devel::Trepan::Interface::Bullwinkle->new();
-    $intf->msg('Testing 1, 2, 3..')
+    $intf->msg('Testing 1, 2, 3..');
+    if (@ARGV) {
+	my $val = $intf->read_command();
+	print "$val\n" if $val;
+    }
 }
 
 1;
