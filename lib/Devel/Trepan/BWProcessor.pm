@@ -49,7 +49,10 @@ sub new($;$$$) {
     my $self = 
       Devel::Trepan::Processor::new($class, $interface, $settings);
     unless (defined $interface) {
-        $interface = Devel::Trepan::Interface::Bullwinkle->new();
+        $interface = 
+	    Devel::Trepan::Interface::Bullwinkle->new(
+		$settings->{input}, $settings->{output}, $settings->{bw_opts}
+	    );
     }
     $self->{actions}        = Devel::Trepan::BrkptMgr->new($dbgr);
     $self->{brkpts}         = Devel::Trepan::BrkptMgr->new($dbgr);

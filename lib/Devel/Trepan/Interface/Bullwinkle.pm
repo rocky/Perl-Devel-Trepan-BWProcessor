@@ -50,7 +50,8 @@ sub new
     my $self = {
         output => $out || *STDOUT,
         input  => Devel::Trepan::IO::Input->new($inp, $input_opts),
-        logger => $connection_opts->{logger}
+        logger => $connection_opts->{logger},
+	opts   => $opts
     };
     bless $self, $class;
     return $self;
@@ -141,6 +142,7 @@ sub read_command($$)
 {
     my ($self) = @_;
     my $cmd_str = $self->readline("Bullwinkle read: ");
+    print "$cmd_str" if $self->{opts}{echo_read};
     eval($cmd_str);
 }
 
