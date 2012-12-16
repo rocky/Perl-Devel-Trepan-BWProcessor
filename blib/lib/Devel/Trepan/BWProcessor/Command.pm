@@ -65,11 +65,6 @@ sub new($$) {
 # FIXME: probably there is a way to do the delegation to proc methods
 # without having type it all out.
 
-sub confirm($$$) {
-    my ($self, $message, $default) = @_;
-    $self->{proc}->confirm($message, $default);
-}
-
 sub errmsg($$;$) {
     my ($self, $message, $opts) = @_;
     $opts ||= {};
@@ -100,12 +95,6 @@ sub msg_nocr($$;$) {
 # The method that implements the debugger command.
 sub run {
     Carp::croak "RuntimeError: You need to define this method elsewhere";
-}
-
-sub section($$;$) {
-    my ($self, $message, $opts) = @_;
-    $opts ||={};
-    $self->{proc}->section($message, $opts);
 }
 
 sub settings($) {

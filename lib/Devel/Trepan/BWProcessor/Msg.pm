@@ -14,15 +14,6 @@ package Devel::Trepan::BWProcessor;
 use vars qw(@EXPORT @ISA);
 @ISA = qw(Exporter);
 
-# sub confirm($$$)
-# {
-#     my ($self, $msg, $default) = @_;
-#     my $intf = $self->{interface};
-#     my $confirmed = $self->{settings}{confirm} ? 
-#         $intf->confirm($msg, $default) : 1;
-#     $confirmed;
-# }
-
 sub errmsg($$;$) 
 {
     my($self, $message, $opts) = @_;
@@ -51,20 +42,9 @@ sub msg_need_running($$;$) {
     $self->errmsg("$prefix not available when terminated");
 }
 
-sub section($$;$) {
-    my($self, $message, $opts) = @_;
-    $opts ||= {};
-    # $message = $self->safe_rep($message) unless $self->{opts}{unlimited};
-    $self->{interface}->msg($message);
-}
-
 unless (caller) {
     require Devel::Trepan::BWProcessor;
     my $proc  = Devel::Trepan::BWProcessor->new;
-    if (scalar(@ARGV) > 0 && $proc->{interface}->is_interactive) {
-        my $response = $proc->confirm("Are you sure?", 1);
-        printf "You typed: %s\n", $response ? "Y" : "N";
-    }
 }
 
 1;

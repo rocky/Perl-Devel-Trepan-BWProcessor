@@ -17,7 +17,6 @@ our @ISA;
 use constant DEFAULT_SETTINGS => {
     autolist      => 0,      # Run 'list' before entering command loop? 
     basename      => 0,      # Show basename of filenames only
-    confirm       => 0,      # Confirm potentially dangerous operations?
     cmddir        => [],     # Additional directories to load commands
                              # from
     different     => 0,      # stop *only* when  different position? 

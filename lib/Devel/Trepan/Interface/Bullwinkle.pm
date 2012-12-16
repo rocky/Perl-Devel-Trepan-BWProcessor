@@ -81,22 +81,6 @@ sub is_interactive($)
     $self->{input}->is_interactive;
 }
 
-sub has_completion($)
-{
-    my $self = shift;
-    $self->{input}{term_readline};
-}
-
-# Called when a dangerous action is about to be done to make sure
-# it's okay. `prompt' is printed; user response is returned.
-# FIXME: make common routine for this and user.rb
-sub confirm($;$$)
-{
-    my ($self, $prompt, $default) = @_;
-    $default = 1 unless defined($default);
-    return $default;
-}
-  
 sub is_input_eof($)
 {
     my ($self) = @_;

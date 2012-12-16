@@ -198,7 +198,7 @@ sub process_commands($$$;$)
         if ($event eq 'watch') {
             my $msg = sprintf("Watchpoint %s: %s changed", 
                               $arg->id, $arg->expr);
-            $self->section($msg);
+            $self->msg($msg);
             my $old_value = defined($arg->old_value) ? $arg->old_value 
                 : 'undef';
             $msg = sprintf("old value\t%s", $old_value);
