@@ -4,6 +4,32 @@ use warnings; no warnings 'redefine';
 use rlib '../../../..';
 
 package Devel::Trepan::BWProcessor::Command::Quit;
+=head1 Quit
+
+Gently exit the debugger and debugged program.
+
+=head2 Input Fields
+
+ { command     => 'quit',
+   [exit_code  => <integer>],
+ }
+
+The program being debugged is exited via I<exit()> which runs the
+Kernel I<at_exit()> finalizers. If a return code is given, that is the
+return code passed to I<exit()> - presumably the return code that will
+be passed back to the OS. If no exit code is given, 0 is used.
+
+=head2 Output Fields
+
+ { name      => 'status',
+   event     => 'terminated',
+   exit_code => <integer>,,
+   [errmsg   => <error-message-array>]
+   [msg      => <message-text array>]
+ }
+
+=cut
+
 use if !@ISA, Devel::Trepan::BWProcessor::Command ;
 
 use strict;

@@ -24,6 +24,7 @@ META.json
 META.yml
 README				README in perlpod format for CPAN
 README.md			README in Markdown format for github
+t/00test-pod.t
 t/10test-bwprocessor.t
 t/10test-intf-bullwinkle.t
 t/20test-Helper.t

@@ -4,6 +4,33 @@ use warnings; no warnings 'redefine';
 use rlib '../../../..';
 
 package Devel::Trepan::BWProcessor::Command::Info_Program;
+=pod
+
+=head1 Info_Program
+
+Information about debugged program and its environment
+
+=head2 Input Fields
+
+ { command => 'info_program',
+ }
+
+
+=head2 Output Fields
+
+ { name       => 'info_program',
+   event      => <event-name>,
+   program    => <program-name>
+   [address   => <op-address>],
+   [errmsg    => <error-message-array>],
+   [msg       => <message-text array>]
+ }
+
+<event-name> is one of the kinds of stopping events, e.g. 'line', 'breakpoint', 'interrupt', etc.
+The address is the current OP address if the program is currently running.
+
+=cut
+
 use if !@ISA, Devel::Trepan::BWProcessor::Command ;
 
 use strict;
