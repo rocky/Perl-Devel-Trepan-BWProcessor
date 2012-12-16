@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2011-2012 Rocky Bernstein <rocky@cpan.org>
+# Copyright (C) 2012 Rocky Bernstein <rocky@cpan.org>
 use warnings; no warnings 'redefine';
 
 use rlib '../../../..';
@@ -7,6 +7,29 @@ use rlib '../../../..';
 # require_relative '../../app/condition'
 
 package Devel::Trepan::CmdProcessor::Command::Next;
+=head1 Next
+
+Step one statement ignoring steps into function calls at this level.
+Sometimes this is called 'step over'.
+
+=head2 Input Fields
+
+ { command  => 'next',
+   [count   => <integer>],
+ }
+
+If I<count> is given that many statements will be stepped over. If it
+is not given, 1 is used, i.e. stop at the next statement.
+
+=head2 Output Fields
+
+ { name     => 'next',
+   count    => <integer>,
+   [errmsg  => <error-message-array>]
+   [msg     => <message-text array>]
+ }
+
+=cut
 
 use if !@ISA, Devel::Trepan::CmdProcessor::Command ;
 

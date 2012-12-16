@@ -15,7 +15,7 @@ step statements
    [count   => <integer>],
  }
 
-If I<skip_count> is given that many statements will be stepped. If it
+If I<count> is given that many statements will be stepped. If it
 is not given, 1 is used, i.e. stop at the next statement.
 
 =head2 Output Fields
