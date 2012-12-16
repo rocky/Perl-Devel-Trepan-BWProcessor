@@ -11,7 +11,7 @@ sub magic_number_matches {
   open FH, '_build/magicnum' or return 0;
   my $filenum = <FH>;
   close FH;
-  return $filenum == 914282;
+  return $filenum == 623729;
 }
 
 my $progname;
@@ -31,16 +31,8 @@ BEGIN {
   }
   unshift @INC,
     (
-     '/src/external-vcs/Perl-Devel-Trepan-BWProcessor/lib/Devel/../../..',
-     '/src/external-vcs/Perl-Devel-Trepan-BWProcessor/lib/Devel/Trepan/../../../..',
-     '/usr/local/share/perl/5.14.2/Devel/Trepan/CmdProcessor/../../..',
-     '/usr/local/share/perl/5.14.2/Array/../../5.14.2/i686-linux-gnu-thread-multi-64int',
-     '/usr/local/share/perl/5.14.2/Array/../../5.14.2',
-     '/usr/local/share/perl/5.14.2/Array/../..',
-     '..',
-     '/src/external-vcs/Perl-Devel-Trepan-BWProcessor/lib/Devel/Trepan/BWProcessor/../../..',
-     '/usr/local/share/perl/5.14.2/../..',
      '/usr/local/share/perl/5.14.2/Devel/../../..',
+     '/usr/local/share/perl/5.14.2/../..',
      '/usr/local/share/perl/../..',
      '/usr/local/share/perl/5.14.2/../../..',
      '/usr/local/share/perl/5.14.2/Devel/Trepan/../..',

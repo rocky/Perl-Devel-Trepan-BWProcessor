@@ -28,6 +28,14 @@ t/10test-bwprocessor.t
 t/10test-intf-bullwinkle.t
 t/20test-Helper.t
 t/20test-quit.t
+t/20test-step.t
+t/20test-syntax.t
+t/data/quit-nonzero-exit.cmd
+t/data/quit-nonzero-exit.right
 t/data/quit.cmd
 t/data/quit.right
+t/data/step.cmd
+t/data/step.right
+t/data/syntax.cmd
+t/data/syntax.right
 t/Helper.pm

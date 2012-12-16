@@ -1,0 +1,59 @@
+{
+  'location' => {
+                  'canonic_filename' => 'gcd.pl',
+                  'line_number' => 18,
+                  'filename' => 'gcd.pl',
+                  'op_addr' => 1955
+                },
+  'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+    @ARGV == 2;',
+  'name' => 'stop_location',
+  'event' => 'line',
+  'package' => 'main'
+}
+
+Bullwinkle read: 
+: {command=>'step'}
+{
+  'count' => 1,
+  'name' => 'step'
+}
+
+{
+  'location' => {
+                  'canonic_filename' => 'gcd.pl',
+                  'line_number' => 20,
+                  'filename' => 'gcd.pl',
+                  'op_addr' => 1955
+                },
+  'text' => 'my ($a, $b) = @ARGV[0,1];',
+  'name' => 'stop_location',
+  'event' => 'line',
+  'package' => 'main'
+}
+
+Bullwinkle read: 
+: {command=>'step', 'count' => 2}
+{
+  'count' => 2,
+  'name' => 'step'
+}
+
+{
+  'location' => {
+                  'canonic_filename' => 'gcd.pl',
+                  'line_number' => 9,
+                  'filename' => 'gcd.pl',
+                  'op_addr' => 1955
+                },
+  'text' => '    my ($a, $b) = @_;',
+  'name' => 'stop_location',
+  'event' => 'line',
+  'package' => 'main'
+}
+
+Bullwinkle read: 
+: {command=>'quit'}
+{
+  'name' => 'quit'
+}
