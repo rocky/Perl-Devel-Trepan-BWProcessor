@@ -13,16 +13,17 @@ First a shell session without sockets:
 
     $ ./bin/trepanbw.pl example/gcd.pl 3 5
     {
+      'event' => 'line',
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
                       'line_number' => 18,
+                      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+       @ARGV == 2;',
                       'filename' => 'example/gcd.pl',
+                      'op_addr' => 182625304,
                       'package' => 'main'
-                      'op_addr' => 182625304
                     },
-      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless ',
       'name' => 'stop_location',
-      'event' => 'line',
     }
 
     Bullwinkle read: {command =>'step', count => 3}
@@ -32,17 +33,17 @@ First a shell session without sockets:
     }
     
     {
+      'event' => 'line',
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
                       'function' => 'main::gcd',
                       'line_number' => 20,
                       'filename' => 'example/gcd.pl',
-                      'package' => 'main'
-                      'op_addr' => 182625832
+                      'op_addr' => 182625832,
+                      'package' => 'main',
+                      'text' => 'my ($a, $b) = @ARGV[0,1];',
                     },
-      'text' => 'my ($a, $b) = @ARGV[0,1];',
       'name' => 'stop_location',
-      'event' => 'line',
     }
 
     Bullwinkle read: {command =>'quit'}
@@ -60,16 +61,17 @@ Then in a second shell:
     $ perl ./BWClient.pm 
     Enter BW command: Got back...
     {
+      'event' => 'line',
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
                       'filename' => 'example/gcd.pl',
                       'line_number' => 18,
-                      'package' => 'main'
-                      'op_addr' => 171383552
+                      'op_addr' => 171383552,
+                      'package' => 'main',
+                      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+       @ARGV == 2;'
                     },
-      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless ',
       'name' => 'stop_location',
-      'event' => 'line',
     }
     {'command'=>'quit', exit_code => 1}
     Enter BW command: Got back...

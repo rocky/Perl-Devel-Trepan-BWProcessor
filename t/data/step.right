@@ -1,14 +1,15 @@
 {
+  'event' => 'line',
   'location' => {
                   'canonic_filename' => 'gcd.pl',
-                  'line_number' => 18,
                   'filename' => 'gcd.pl',
+                  'line_number' => 18,
+                  'op_addr' => 1955,
                   'package' => 'main',
-                  'op_addr' => 1955
+                  'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+    @ARGV == 2;'
                 },
-  'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless ',
-  'name' => 'stop_location',
-  'event' => 'line'
+  'name' => 'stop_location'
 }
 
 Bullwinkle read: 
@@ -19,16 +20,16 @@ Bullwinkle read:
 }
 
 {
+  'event' => 'line',
   'location' => {
                   'canonic_filename' => 'gcd.pl',
-                  'line_number' => 20,
                   'filename' => 'gcd.pl',
+                  'line_number' => 20,
+                  'op_addr' => 1955,
                   'package' => 'main',
-                  'op_addr' => 1955
+                  'text' => 'my ($a, $b) = @ARGV[0,1];'
                 },
-  'text' => 'my ($a, $b) = @ARGV[0,1];',
-  'name' => 'stop_location',
-  'event' => 'line'
+  'name' => 'stop_location'
 }
 
 Bullwinkle read: 
@@ -39,17 +40,17 @@ Bullwinkle read:
 }
 
 {
+  'event' => 'line',
   'location' => {
                   'canonic_filename' => 'gcd.pl',
+                  'filename' => 'gcd.pl',
                   'function' => 'main::gcd',
                   'line_number' => 9,
-                  'filename' => 'gcd.pl',
+                  'op_addr' => 1955,
                   'package' => 'main',
-                  'op_addr' => 1955
+                  'text' => '    my ($a, $b) = @_;'
                 },
-  'text' => '    my ($a, $b) = @_;',
-  'name' => 'stop_location',
-  'event' => 'line'
+  'name' => 'stop_location'
 }
 
 Bullwinkle read: 

@@ -1,14 +1,15 @@
 {
+  'event' => 'line',
   'location' => {
                   'canonic_filename' => 'gcd.pl',
-                  'line_number' => 18,
                   'filename' => 'gcd.pl',
+                  'line_number' => 18,
+                  'op_addr' => 1955,
                   'package' => 'main',
-                  'op_addr' => 1955
+                  'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+    @ARGV == 2;'
                 },
-  'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless ',
-  'name' => 'stop_location',
-  'event' => 'line'
+  'name' => 'stop_location'
 }
 
 Bullwinkle read: 

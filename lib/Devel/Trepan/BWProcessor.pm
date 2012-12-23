@@ -50,9 +50,9 @@ sub new($;$$$) {
       Devel::Trepan::Processor::new($class, $interface, $settings);
     unless (defined $interface) {
         $interface = 
-	    Devel::Trepan::Interface::Bullwinkle->new(
-		$settings->{input}, $settings->{output}, $settings->{bw_opts}
-	    );
+            Devel::Trepan::Interface::Bullwinkle->new(
+                $settings->{input}, $settings->{output}, $settings->{bw_opts}
+            );
     }
     $self->{actions}        = Devel::Trepan::BrkptMgr->new($dbgr);
     $self->{brkpts}         = Devel::Trepan::BrkptMgr->new($dbgr);
@@ -102,8 +102,8 @@ sub terminated($$;$) {
     $self->{event} = 'terminated';
     $self->{terminated} = 1;
     my $response = { 
-	'name'  => 'status',
-	'event' => $event
+        'name'  => 'status',
+        'event' => $event
     };
     $response->{exit_code} = $exitrc if defined $exitrc;
     $self->flush_msg;
@@ -135,17 +135,17 @@ sub process_command_and_quit($)
     while (!$intf->is_input_eof) {
         # begin
         if (scalar(@cmd_queue) == 0) {
-	    $cmd_hash = $intf->read_command();
-	    unless (valid_cmd_hash($cmd_hash)) {
-		$self->errmsg("invalid input. Expecting a hash reference with key 'command'",
-		    {set_name => 1});
-		$self->{interface}->msg($self->{response});
-		return $self->{response};
-	    }
-	} else {
-	    $cmd_hash = shift @cmd_queue;
-	    $self->{cmd_queue} = \@cmd_queue;
-	}
+            $cmd_hash = $intf->read_command();
+            unless (valid_cmd_hash($cmd_hash)) {
+                $self->errmsg("invalid input. Expecting a hash reference with key 'command'",
+                    {set_name => 1});
+                $self->{interface}->msg($self->{response});
+                return $self->{response};
+            }
+        } else {
+            $cmd_hash = shift @cmd_queue;
+            $self->{cmd_queue} = \@cmd_queue;
+        }
         last;
         # rescue IOError, Errno::EPIPE => e
         # }
@@ -178,7 +178,7 @@ sub process_commands($$$;$)
     my ($self, $frame, $event, $arg) = @_;
 
     if ($event eq 'terminated') {
-	$self->terminated('terminated');
+        $self->terminated('terminated');
     } elsif (!defined($event)) {
         $event = 'unknown';
     }
@@ -240,7 +240,7 @@ sub process_commands($$$;$)
             }
 
             $self->print_location($event, {frame => $self->{frame}}) 
-		unless $self->{terminated};
+                unless $self->{terminated};
                  # || $self->{settings}{traceprint};
 
             ## $self->{eventbuf}->add_mark if $self->{settings}{tracebuffer};
@@ -270,15 +270,15 @@ sub run_command($$)
     my %commands = %{$self->{commands}};
 
     if ($commands{$cmd_name}) {
-	my $cmd = $commands{$cmd_name};
-	if ($self->ok_for_running($cmd, $current_command)) {
-	    $self->{current_command} = $current_command;
-	    $self->{response}{name} = $cmd_name;
-	    $cmd->run($current_command);
-	}
+        my $cmd = $commands{$cmd_name};
+        if ($self->ok_for_running($cmd, $current_command)) {
+            $self->{current_command} = $current_command;
+            $self->{response}{name} = $cmd_name;
+            $cmd->run($current_command);
+        }
     } else {
-	my $msg = sprintf 'Undefined command: "%s"', $cmd_name;
-	$self->errmsg($msg, {set_name=>1});
+        my $msg = sprintf 'Undefined command: "%s"', $cmd_name;
+        $self->errmsg($msg, {set_name=>1});
     }
     return $self->{response}
 }
@@ -290,9 +290,9 @@ unless (caller) {
     my $response = $proc->run_command({'command' => 'info_program'});
     $proc->{interface}->msg($response);
     if (@ARGV) {
-	while (1) {
-	    $proc->process_command_and_quit();
-	}
+        while (1) {
+            $proc->process_command_and_quit();
+        }
     }
 }
 

@@ -112,6 +112,7 @@ sub msg($;$)
 {
     my ($self, $msg) = @_;
     $Data::Dumper::Terse = 1;
+    $Data::Dumper::Sortkeys = 1;
     my $coded_msg = Data::Dumper::Dumper($msg) . "\n";
     if ($self->{tcpip}) { 
 	$self->{inout}->writeline($coded_msg);

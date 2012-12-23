@@ -1,4 +1,4 @@
-# Copyright (C) 2011, 2012 Rocky Bernstein <rocky@cpan.org>
+# Copyright (C) 2012 Rocky Bernstein <rocky@cpan.org>
 use strict;
 use Exporter;
 use warnings;
@@ -109,18 +109,21 @@ sub format_location($;$$$)
 
     $self->{line_no}  = $self->{frame}{line};
     my $loc           = $self->source_location_info;
-    if (defined($frame))
-    {
-	$loc->{function}  = $frame->{fn} if 
-	    $frame->{fn} && $frame->{fn} ne 'DB::DB';
-	$loc->{package}   = $frame->{pkg};
+    if (defined($frame)) {
+        $loc->{function}  = $frame->{fn} if 
+            $frame->{fn} && $frame->{fn} ne 'DB::DB';
+        $loc->{package}   = $frame->{pkg};
+    }
+    my $text = $self->current_source_text();
+    if ($text) {
+        $loc->{text} = $text;
     }
     my $response = {
-	name        => 'stop_location',
-	location    => $loc,
+        name        => 'stop_location',
+        location    => $loc,
     };
     $response->{event}       = $event if $event;
-    $response->{frame_index} = 	$frame_index if $frame_index;
+    $response->{frame_index} =  $frame_index if $frame_index;
     return $response;
 }
 
@@ -129,11 +132,6 @@ sub print_location($;$$)
     my ($self,$event,$opts) = @_;
     my $frame     = $opts->{frame};
     my $response  = $self->format_location($event, $frame);
-
-    my $text = $self->current_source_text($opts);
-    if ($text) {
-        $response->{text} = $text;
-    }
     $self->{interface}->msg($response);
   }
   
@@ -147,9 +145,9 @@ sub source_location_info($)
     my $filename = $self->{frame}{file};
     my $line_number = $self->line() || 0;
     my $response = {
-	canonic_filename => $self->canonic_file($self->filename()),
-	filename         => $self->filename(),
-	line_number      => ${line_number},
+        canonic_filename => $self->canonic_file($self->filename()),
+        filename         => $self->filename(),
+        line_number      => ${line_number},
     };
 
     my $op_addr = $DB::OP_addr;
@@ -165,8 +163,8 @@ sub source_location_info($)
                 $filename = DB::LineCache::map_script($filename, $string);
             }
             $response->{remapped} =
-		{filename    => $filename,
-		 line_number => $line_number},
+                {filename    => $filename,
+                 line_number => $line_number},
         }
     }
     return $response;
