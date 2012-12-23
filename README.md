@@ -7,40 +7,41 @@ wanting to communicate with the debugger Devel::Trepan.
 
 ## Usage
 
-Distributed with this code is sample threaded code to show use from the front-end with and without a socket connection. First a session without sockets: 
+Distributed with this code is sample threaded code to show use from the front-end with and without a socket connection. First a shell session without sockets: 
 
-    ./bin/trepanbw.pl example/gcd.pl 3 5
+    $ ./bin/trepanbw.pl example/gcd.pl 3 5
     {
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
                       'line_number' => 18,
                       'filename' => 'example/gcd.pl',
+		      'package' => 'main'
                       'op_addr' => 182625304
                     },
       'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
           @ARGV == 2;',
       'name' => 'stop_location',
       'event' => 'line',
-      'package' => 'main'
     }
 
-    Bullwinkle read: {command =>'step'}
+    Bullwinkle read: {command =>'step', count => 3}
     {
-      'count' => 1,
+      'count' => 3,
       'name' => 'step'
     }
     
     {
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
+  		      'function' => 'main::gcd',
                       'line_number' => 20,
                       'filename' => 'example/gcd.pl',
+                      'package' => 'main'
                       'op_addr' => 182625832
                     },
       'text' => 'my ($a, $b) = @ARGV[0,1];',
       'name' => 'stop_location',
       'event' => 'line',
-      'package' => 'main'
     }
 
     Bullwinkle read: {command =>'quit'}
@@ -49,26 +50,26 @@ Distributed with this code is sample threaded code to show use from the front-en
     }
 
 
-And now an example over a TCP/IP socket. In first shell: 
+And now an example over a TCP/IP socket. In a shell: 
 
-    ./bin/trepanbw.pl --server example/gcd.pl 3 5
+    $ ./bin/trepanbw.pl --server example/gcd.pl 3 5
 
-In second shell: 
+Then in a second shell: 
 
-    perl ./BWClient.pm 
+    $ perl ./BWClient.pm 
     Enter BW command: Got back...
     {
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
                       'filename' => 'example/gcd.pl',
                       'line_number' => 18,
+                      'package' => 'main'
                       'op_addr' => 171383552
                     },
       'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
          @ARGV == 2;',
       'name' => 'stop_location',
       'event' => 'line',
-      'package' => 'main'
     }
     {'command'=>'quit', exit_code => 1}
     Enter BW command: Got back...
@@ -83,7 +84,7 @@ In second shell:
 LICENSE AND COPYRIGHT
 ---------------------
 
-Copyright (C) 2011, 2012 Rocky Bernstein <rocky@cpan.org>
+Copyright (C) 2012 Rocky Bernstein <rocky@cpan.org>
 
 This program is distributed WITHOUT ANY WARRANTY, including but not
 limited to the implied warranties of merchantability or fitness for a
