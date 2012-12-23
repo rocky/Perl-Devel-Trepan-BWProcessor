@@ -108,12 +108,15 @@ sub format_location($;$$$)
     my ($self, $event, $frame, $frame_index) = @_;
 
     $self->{line_no}  = $self->{frame}{line};
-    
-    my $loc = $self->source_location_info;
-    my $pkg = $self->{frame}{pkg};
+    my $loc           = $self->source_location_info;
+    if (defined($frame))
+    {
+	$loc->{function}  = $frame->{fn} if 
+	    $frame->{fn} && $frame->{fn} ne 'DB::DB';
+	$loc->{package}   = $frame->{pkg};
+    }
     my $response = {
 	name        => 'stop_location',
-	'package'   => $pkg,
 	location    => $loc,
     };
     $response->{event}       = $event if $event;
@@ -124,7 +127,8 @@ sub format_location($;$$$)
 sub print_location($;$$)
 {
     my ($self,$event,$opts) = @_;
-    my $response  = $self->format_location($event);
+    my $frame     = $opts->{frame};
+    my $response  = $self->format_location($event, $frame);
 
     my $text = $self->current_source_text($opts);
     if ($text) {

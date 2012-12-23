@@ -189,7 +189,7 @@ sub process_commands($$$;$)
         if ($event eq 'after_nest') {
             $self->msg("Leaving nested debug level $DB::level");
             $self->frame_setup();
-            $self->print_location($event);
+            $self->print_location($event, {frame => $self->{frame}});
         }
     } else {
         $self->{event} = $event;
@@ -238,8 +238,9 @@ sub process_commands($$$;$)
                     }
                 }
             }
-        
-            $self->print_location($event) unless $self->{terminated};
+
+            $self->print_location($event, {frame => $self->{frame}}) 
+		unless $self->{terminated};
                  # || $self->{settings}{traceprint};
 
             ## $self->{eventbuf}->add_mark if $self->{settings}{tracebuffer};
