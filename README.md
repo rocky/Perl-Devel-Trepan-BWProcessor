@@ -7,7 +7,9 @@ wanting to communicate with the debugger Devel::Trepan.
 
 ## Usage
 
-Distributed with this code is sample threaded code to show use from the front-end with and without a socket connection. First a shell session without sockets: 
+Distributed with this code are some simple front ends used for testing and as a demonstration. We show their use below. 
+
+First a shell session without sockets: 
 
     $ ./bin/trepanbw.pl example/gcd.pl 3 5
     {
@@ -15,11 +17,10 @@ Distributed with this code is sample threaded code to show use from the front-en
                       'canonic_filename' => '/tmp/example/gcd.pl',
                       'line_number' => 18,
                       'filename' => 'example/gcd.pl',
-		      'package' => 'main'
+                      'package' => 'main'
                       'op_addr' => 182625304
                     },
-      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
-          @ARGV == 2;',
+      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless ',
       'name' => 'stop_location',
       'event' => 'line',
     }
@@ -33,7 +34,7 @@ Distributed with this code is sample threaded code to show use from the front-en
     {
       'location' => {
                       'canonic_filename' => '/tmp/example/gcd.pl',
-  		      'function' => 'main::gcd',
+                      'function' => 'main::gcd',
                       'line_number' => 20,
                       'filename' => 'example/gcd.pl',
                       'package' => 'main'
@@ -66,8 +67,7 @@ Then in a second shell:
                       'package' => 'main'
                       'op_addr' => 171383552
                     },
-      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
-         @ARGV == 2;',
+      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless ',
       'name' => 'stop_location',
       'event' => 'line',
     }
@@ -96,4 +96,3 @@ Free Software Foundation (either version 2 or any later version) and
 the Perl Artistic License as published by O’Reilly Media, Inc. Please
 open the files named gpl-2.0.txt and Artistic for a copy of these
 licenses.
-
