@@ -15,7 +15,7 @@ our (@ISA);
 use if !@ISA, Devel::Trepan::Interface;
 use if !@ISA, Devel::Trepan::IO::Input;
 use Devel::Trepan::Util qw(hash_merge);
-# use if !@ISA, Devel::Trepan::IO::TCPServer;
+use if !@ISA, Devel::Trepan::IO::TCPServer;
 use if !@ISA, Devel::Trepan::IO::Input;
 
 use strict; 
@@ -47,32 +47,44 @@ sub new
   
     # at_exit { finalize };
     ## FIXME:
-    my $self = {
-        output => $out || *STDOUT,
-        input  => Devel::Trepan::IO::Input->new($inp, $input_opts),
-        logger => $connection_opts->{logger},
-	opts   => $opts
+    my $self;
+    if ($opts->{tcpip}) {
+	my $inout = Devel::Trepan::IO::TCPServer->new($connection_opts);
+	$self = {
+	    output => $inout,
+	    inout  => $inout,
+	    input  => $inout,
+	    logger => $connection_opts->{logger},
+	    tcpip  => 1,
+	};
+    } else {
+	$self = {
+	    output      => $out || *STDOUT,
+	    input       => Devel::Trepan::IO::Input->new($inp, $input_opts),
+	    logger      => $connection_opts->{logger},
+	    interactive => 0, 
+	    tcpip       => 0,
+	    opts        => $opts
+	}
     };
     bless $self, $class;
     return $self;
 }
   
-# # Closes both input and output
-# sub close($)
-# {
-#     my ($self) = @_;
-#     if ($self->{inout} && $self->{inout}->is_connected) {
-#         $self->{inout}->write(QUIT . 'bye');
-#         $self->{inout}->close;
-#     }
-# }
+ sub close($)
+ {
+     my ($self) = @_;
+     $self->{inout}->close if $self->{tcpip};
+ }
   
 sub is_closed($) 
 {
     my($self)  = shift;
-    # FIXME: 
-    # $self->{input}->is_eof && $self->{output}->is_eof;
-    0
+    if ($self->{tcpip}) {
+	$self->{inout}->is_closed ;
+    } else {
+	$self->{input}->is_eof && $self->{output}->is_eof;
+    }
 }
 
 sub is_interactive($)
@@ -95,9 +107,13 @@ use Data::Dumper;
 sub msg($;$)
 {
     my ($self, $msg) = @_;
-    ### FIXME
-    print Data::Dumper::Dumper($msg), "\n";
-    # $self->{inout}->writeline(PRINT . $msg);
+    $Data::Dumper::Terse = 1;
+    my $coded_msg = Data::Dumper::Dumper($msg) . "\n";
+    if ($self->{tcpip}) { 
+	$self->{inout}->writeline($coded_msg);
+    } else {
+	print $coded_msg;
+    }
 }
 
 # used to write to a debugger that is connected to this
@@ -105,28 +121,46 @@ sub msg($;$)
 sub errmsg($;$)
 {
     my ($self, $msg) = @_;
-    ### FIXME
-    print Data::Dumper::Dumper($msg), "\n";
-    # $self->{inout}->writeline(SERVERERR . $msg);
+    $self->msg($msg);
 }
 
 sub readline($;$) {
     my($self, $prompt)  = @_;
-    $self->{output}->flush;
-    if ($self->{input}{readline}) {
-        $self->{input}->readline($prompt);
-    } else { 
-        $self->{output}->write($prompt . "\n: ") if defined($prompt) && $prompt;
-        $self->{input}->readline;
+    $self->{output}->flush if $self->{output}->can('flush');
+    if ($self->{tcpip}) {
+	my $line;
+	eval {
+	    $line = $self->{inout}->read_msg();
+	};
+	if ($EVAL_ERROR) {
+	    print {$self->{logger}} "$EVAL_ERROR\n" if $self->{logger};
+	    $self->errmsg("Server communication protocol error...");
+	    # FIXME: resync...
+	    return undef;
+	} else {
+	    return $line;
+	}
+    } else {
+	if ($self->{input}{readline}) {
+	    $self->{input}->readline($prompt);
+	} else { 
+	    $self->{output}->write($prompt . "\n: ") if defined($prompt) && $prompt;
+	    $self->{input}->readline;
+	}
     }
 }
 
 # read a debugger command
-sub read_command($$)
+sub read_command($;$)
 {
-    my ($self) = @_;
-    my $cmd_str = $self->readline("Bullwinkle read: ");
-    print "$cmd_str" if $self->{opts}{echo_read};
+    my ($self, $prompt) = @_;
+    my $cmd_str;
+    if ($self->{tcpip}) {
+	$cmd_str = $self->readline($prompt);
+    } else {
+	$cmd_str = $self->readline("Bullwinkle read: ");
+	print "$cmd_str" if $self->{opts}{echo_read};
+    }
     eval($cmd_str);
 }
 
@@ -135,8 +169,12 @@ unless (caller) {
     my $intf = Devel::Trepan::Interface::Bullwinkle->new();
     $intf->msg('Testing 1, 2, 3..');
     if (@ARGV) {
+	if ($ARGV[0] eq 'tcpip') {
+	    $intf = Devel::Trepan::Interface::Bullwinkle->new(undef, undef, {tcpip =>1});
+	    print "Reading from socket...\n";
+	}
 	my $val = $intf->read_command();
-	print "$val\n" if $val;
+	$intf->msg($val) if $val;
     }
 }
 

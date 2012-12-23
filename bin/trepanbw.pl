@@ -48,7 +48,13 @@ print "$output\n" if $rc;
 exit $rc if $rc;
 
 $opts->{dollar_0} = $ARGV[0];
-$opts->{bw} = 1; # Unconditionally set to run Bullwinkle
+
+# Unconditionally set to run Bullwinkle
+if ($opts->{client}) {
+    $opts->{bw} = {bw_opts => {tcpip => 1}};
+} else {
+    $opts->{bw} = {bw_opts => {tcpip => 0}}; 
+}
 $ENV{'TREPANPL_OPTS'} = Data::Dumper::Dumper($opts);
 # print Dumper($opts), "\n";
 
