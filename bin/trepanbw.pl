@@ -50,7 +50,7 @@ exit $rc if $rc;
 $opts->{dollar_0} = $ARGV[0];
 
 # Unconditionally set to run Bullwinkle
-if ($opts->{client}) {
+if ($opts->{server}) {
     $opts->{bw} = {bw_opts => {tcpip => 1}};
 } else {
     $opts->{bw} = {bw_opts => {tcpip => 0}}; 

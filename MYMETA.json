@@ -4,7 +4,7 @@
       "Rocky Bernstein <rocky@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "open_source"
    ],
@@ -21,12 +21,12 @@
       },
       "runtime" : {
          "requires" : {
-            "Data::Dumper" : "0",
+            "Data::Dumper" : 0,
             "Devel::Trepan" : "0.40",
             "Getopt::Long" : "2.36",
             "perl" : "5.008008",
             "rlib" : "0.02",
-            "version" : "0"
+            "version" : 0
          }
       }
    },

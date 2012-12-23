@@ -106,6 +106,7 @@ sub terminated($$;$) {
 	'event' => $event
     };
     $response->{exit_code} = $exitrc if defined $exitrc;
+    print "TERMINATED!\n";
     $self->flush_msg;
 }
 

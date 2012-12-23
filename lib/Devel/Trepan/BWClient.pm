@@ -32,6 +32,8 @@ sub msg($$)
     $self->{intf}{user}->msg($msg);
 }
 
+use threads;
+
 sub start_client($)
 {
     my $options = shift;
@@ -45,32 +47,37 @@ sub start_client($)
     );
     my $intf = $client->{intf};
     my $line;
-    $intf->write_remote('{command=>"status"}');
+
+    my $thr = threads->create(
+        sub {
+            while (1) {
+                eval {
+                    $line = $intf->read_remote;
+                };
+                if ($EVAL_ERROR) {
+                    $client->msg("Remote debugged process closed connection");
+                    last;
+                }
+                print "Got back...\n";
+                $Data::Dumper::Terse = 1;
+                print Data::Dumper::Dumper($line);
+            }
+        });
+
     while (1) {
+        my $command;
         eval {
-	    print "Reading remote\n";
-            $line = $intf->read_remote;
+            $command = $client->{user_inputs}[0]->read_command('Enter BW command: ');
         };
         if ($EVAL_ERROR) {
-            $client->msg("Remote debugged process closed connection");
-            last;
+            if (scalar @{$client->{user_inputs}} == 0) {
+                $client->msg("user-side EOF. Quitting...");
+                last;
+            };
         }
-	print "Got back...\n";
-	print Data::Dumper::Dumper($line);
-	my $command;
-	my $leave_loop = 0;
-	eval {
-	    $command = $client->{user_inputs}[0]->read_command('Enter BW command: ');
-	};
-	if ($EVAL_ERROR) {
-	    if (scalar @{$client->{user_inputs}} == 0) {
-		$client->msg("user-side EOF. Quitting...");
-		last;
-	    };
-	}
-	print "Command is: $command\n";
-	$intf->write_remote($command);
+        $intf->write_remote($command);
     }
+    $thr->join();
 }
 
 unless (caller) {

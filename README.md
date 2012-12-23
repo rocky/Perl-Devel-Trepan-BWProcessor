@@ -5,6 +5,81 @@ This module adds the ability to speak the Bullwinkle protocol. It is
 intended as a more programmer-friendly interface for front-ends
 wanting to communicate with the debugger Devel::Trepan.
 
+## Usage
+
+Distributed with this code is sample threaded code to show use from the front-end with and without a socket connection. First a session without sockets: 
+
+    ./bin/trepanbw.pl example/gcd.pl 3 5
+    {
+      'location' => {
+                      'canonic_filename' => '/tmp/example/gcd.pl',
+                      'line_number' => 18,
+                      'filename' => 'example/gcd.pl',
+                      'op_addr' => 182625304
+                    },
+      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+          @ARGV == 2;',
+      'name' => 'stop_location',
+      'event' => 'line',
+      'package' => 'main'
+    }
+
+    Bullwinkle read: {command =>'step'}
+    {
+      'count' => 1,
+      'name' => 'step'
+    }
+    
+    {
+      'location' => {
+                      'canonic_filename' => '/tmp/example/gcd.pl',
+                      'line_number' => 20,
+                      'filename' => 'example/gcd.pl',
+                      'op_addr' => 182625832
+                    },
+      'text' => 'my ($a, $b) = @ARGV[0,1];',
+      'name' => 'stop_location',
+      'event' => 'line',
+      'package' => 'main'
+    }
+
+    Bullwinkle read: {command =>'quit'}
+    {
+     'name' => 'quit'
+    }
+
+
+And now an example over a TCP/IP socket. In first shell: 
+
+    ./bin/trepanbw.pl --server example/gcd.pl 3 5
+
+In second shell: 
+
+    perl ./BWClient.pm 
+    Enter BW command: Got back...
+    {
+      'location' => {
+                      'canonic_filename' => '/tmp/example/gcd.pl',
+                      'filename' => 'example/gcd.pl',
+                      'line_number' => 18,
+                      'op_addr' => 171383552
+                    },
+      'text' => 'die sprintf "Need two integer arguments, got %d", scalar(@ARGV) unless 
+         @ARGV == 2;',
+      'name' => 'stop_location',
+      'event' => 'line',
+      'package' => 'main'
+    }
+    {'command'=>'quit', exit_code => 1}
+    Enter BW command: Got back...
+    {
+      'name' => 'quit'
+    }
+    Remote debugged process closed connection
+
+   
+    
+
 LICENSE AND COPYRIGHT
 ---------------------
 

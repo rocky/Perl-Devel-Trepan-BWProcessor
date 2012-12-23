@@ -86,9 +86,9 @@ sub read_remote
     }
     my $remote_line = eval($coded_line);
     if ($EVAL_ERROR) {
-	return "ERROR\n";
+        return "ERROR\n";
     } else {
-	return $remote_line;
+        return $remote_line;
     }
 }
 
@@ -98,7 +98,6 @@ sub write_remote($$$)
 {
     my ($self, $msg) = @_;
 
-    print "msg is $msg\n";
     $Data::Dumper::Terse = 1;
     my $coded_msg = eval(Data::Dumper::Dumper($msg));
     ## print "msg $msg; Coded msg is $coded_msg\n";
@@ -108,7 +107,7 @@ sub write_remote($$$)
 # Demo
 unless (caller) {
     my $intf = Devel::Trepan::Interface::BWClient->new(undef, undef, undef, undef, 
-						       {open => 0});
+                                                       {open => 0});
 }
 
 1;
