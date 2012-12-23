@@ -81,7 +81,7 @@ sub start_client($)
 }
 
 unless (caller) {
-    Devel::Trepan::BWClient::start_client({host=>'127.0.0.1', port=>1954});
+    Devel::Trepan::BWClient::start_client({host=>'127.0.0.1', port=>1964});
 }
 
 1;

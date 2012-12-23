@@ -23,7 +23,8 @@ use strict;
 @ISA = qw(Devel::Trepan::Interface Exporter);
 
 use constant DEFAULT_INIT_CONNECTION_OPTS => {
-    io => 'TCP',
+    io     => 'TCP',
+    port   => 1964,
     logger => undef  # An Interface. Complaints go here.
 };
 
@@ -42,28 +43,31 @@ use constant DEFAULT_INPUT_OPTS => {
 sub new
 {
     my($class, $inp, $out, $opts) = @_;
-    my $connection_opts = hash_merge($opts->{connection_opts}, DEFAULT_INIT_CONNECTION_OPTS);
     my $input_opts = hash_merge($opts->{input_opts}, DEFAULT_INPUT_OPTS);
   
     # at_exit { finalize };
     ## FIXME:
     my $self;
     if ($opts->{tcpip}) {
+	my $connection_opts = hash_merge($opts->{connection_opts}, 
+					 DEFAULT_INIT_CONNECTION_OPTS);
 	my $inout = Devel::Trepan::IO::TCPServer->new($connection_opts);
 	$self = {
 	    output => $inout,
 	    inout  => $inout,
 	    input  => $inout,
-	    logger => $connection_opts->{logger},
+	    logger => $opts->{logger},
 	    tcpip  => 1,
+	    opts   => $opts
 	};
     } else {
 	$self = {
 	    output      => $out || *STDOUT,
 	    input       => Devel::Trepan::IO::Input->new($inp, $input_opts),
-	    logger      => $connection_opts->{logger},
+	    logger      => undef,
 	    interactive => 0, 
 	    tcpip       => 0,
+	    logger      => $opts->{logger},
 	    opts        => $opts
 	}
     };
