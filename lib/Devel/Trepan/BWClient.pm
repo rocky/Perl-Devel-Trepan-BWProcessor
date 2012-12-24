@@ -46,21 +46,21 @@ sub start_client($)
          port        => $options->{port}}
     );
     my $intf = $client->{intf};
-    my $line;
+    my $response;
 
     my $thr = threads->create(
         sub {
             while (1) {
                 eval {
-                    $line = $intf->read_remote;
+                    $response = $intf->read_remote;
                 };
                 if ($EVAL_ERROR) {
                     $client->msg("Remote debugged process closed connection");
                     last;
                 }
-                print "Got back...\n";
-                $Data::Dumper::Terse = 1;
-                print Data::Dumper::Dumper($line);
+                $Data::Dumper::Terse     = 1;
+		$Data::Dumper::Sortkeys  = 1;
+                print Data::Dumper::Dumper($response);
             }
         });
 

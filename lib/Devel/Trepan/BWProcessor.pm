@@ -116,9 +116,14 @@ sub ok_for_running ($$$$) {
     return 1;
 }
 
-sub valid_cmd_hash($) {
-    my ($cmd) = @_;
-    'HASH' eq ref($cmd) and $cmd->{command};
+sub invalid_cmd_hash($) {
+    my ($hash_ref_with_cmd) = @_;
+    my $reftype = ref($hash_ref_with_cmd);
+    return 'not a reference' unless $reftype;
+    return 'reference is not to a hash' unless $reftype eq 'HASH';
+    return 'hash reference does not have a key called "command"'
+        unless $hash_ref_with_cmd->{command};
+    return 0;
 }
 
 # Run one debugger command. 1 is returned if we want to quit.
@@ -136,8 +141,9 @@ sub process_command_and_quit($)
         # begin
         if (scalar(@cmd_queue) == 0) {
             $cmd_hash = $intf->read_command();
-            unless (valid_cmd_hash($cmd_hash)) {
-                $self->errmsg("invalid input. Expecting a hash reference with key 'command'",
+            my $errtype = invalid_cmd_hash($cmd_hash);
+            if ($errtype) {
+                $self->errmsg("invalid input: $errtype",
                     {set_name => 1});
                 $self->{interface}->msg($self->{response});
                 return $self->{response};
@@ -287,6 +293,9 @@ unless (caller) {
     my $proc  = Devel::Trepan::BWProcessor->new;
     print $proc->{class}, "\n";
     print $proc->{interface}, "\n";
+    for my $ref (1, [1,2,3], {nocommand=>1}) {
+        print invalid_cmd_hash($ref), "\n";
+    }
     my $response = $proc->run_command({'command' => 'info_program'});
     $proc->{interface}->msg($response);
     if (@ARGV) {
