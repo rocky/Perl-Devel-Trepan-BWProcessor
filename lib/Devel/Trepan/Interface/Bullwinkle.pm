@@ -8,7 +8,9 @@ use rlib '../../..';
 # reside outside of the debugged process, possibly on another
 # computer
 package Devel::Trepan::Interface::Bullwinkle;
+
 use English qw( -no_match_vars );
+use Devel::Trepan::Util;
 our (@ISA);
 
 # Our local modules
@@ -166,7 +168,14 @@ sub read_command($;$)
 	$cmd_str = $self->readline("Bullwinkle read: ");
 	print "$cmd_str" if $self->{opts}{echo_read};
     }
-    eval($cmd_str);
+    my $error_msg = Devel::Trepan::Util::invalid_perl_syntax($cmd_str);
+    if ($error_msg) {
+	return "syntax error:\n$error_msg";
+    } elsif (!defined($cmd_str)) {
+	return "undefined value";
+    }
+    no warnings;
+    eval $cmd_str;
 }
 
 # Demo

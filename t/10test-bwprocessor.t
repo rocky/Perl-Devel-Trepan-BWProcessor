@@ -9,7 +9,7 @@ use Test::More;
 plan;
 
 is(Devel::Trepan::BWProcessor::invalid_cmd_hash(1),
-   'not a reference');
+   'not a reference; need a hash reference');
 is(Devel::Trepan::BWProcessor::invalid_cmd_hash([1,2,3]),
    'reference is not to a hash',);
 is(Devel::Trepan::BWProcessor::invalid_cmd_hash({nocommand=>1}),

@@ -16,7 +16,7 @@ Bullwinkle read:
 : 5
 {
   'errmsg' => [
-                'invalid input. Expecting a hash reference with key \'command\''
+                'invalid input: 5'
               ],
   'name' => 'error'
 }
@@ -25,7 +25,7 @@ Bullwinkle read:
 : {10}
 {
   'errmsg' => [
-                'invalid input. Expecting a hash reference with key \'command\''
+                'invalid input: 10'
               ],
   'name' => 'error'
 }
@@ -34,7 +34,7 @@ Bullwinkle read:
 : {'foo'=>'bar'}
 {
   'errmsg' => [
-                'invalid input. Expecting a hash reference with key \'command\''
+                'invalid input: hash reference does not have a key called "command"'
               ],
   'name' => 'error'
 }

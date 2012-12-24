@@ -62,7 +62,7 @@ my $builder = Module::Build->new(
 
     requires => {
         'perl'                              => '5.008008',
-        'Devel::Trepan'                     => '0.40',
+        'Devel::Trepan'                     => '0.47_01',
         # 'Capture::Tiny'                     => 0,
         'Data::Dumper'                      => 0,
         'Getopt::Long'                      => '2.36',

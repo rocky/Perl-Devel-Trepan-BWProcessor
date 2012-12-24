@@ -119,7 +119,7 @@ sub ok_for_running ($$$$) {
 sub invalid_cmd_hash($) {
     my ($hash_ref_with_cmd) = @_;
     my $reftype = ref($hash_ref_with_cmd);
-    return 'not a reference' unless $reftype;
+    return 'not a reference; need a hash reference' unless $reftype;
     return 'reference is not to a hash' unless $reftype eq 'HASH';
     return 'hash reference does not have a key called "command"'
         unless $hash_ref_with_cmd->{command};
@@ -141,6 +141,12 @@ sub process_command_and_quit($)
         # begin
         if (scalar(@cmd_queue) == 0) {
             $cmd_hash = $intf->read_command();
+	    if (defined($cmd_hash) && !ref($cmd_hash)) {
+                $self->errmsg("invalid input: $cmd_hash",
+                    {set_name => 1});
+                $self->{interface}->msg($self->{response});
+                return $self->{response};
+	    }
             my $errtype = invalid_cmd_hash($cmd_hash);
             if ($errtype) {
                 $self->errmsg("invalid input: $errtype",
